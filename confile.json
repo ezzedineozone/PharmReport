@@ -1,0 +1,10 @@
+{
+  "connection": {
+    "hostname": "localhost",
+    "port": 8080
+  },
+  "credentials": {
+    "username": "PharmReportWinUI",
+    "apiKey": "privateKey"
+  }
+}
