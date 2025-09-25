@@ -15,6 +15,8 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using PharmReport.Models;
+using PharmReport.EF;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -26,8 +28,10 @@ namespace PharmReport
     /// </summary>
     public partial class App : Application
     {
-        private Window? _window;
-
+        private Window _window;
+        private FrmMainWindow? _frmWindow;
+        private PharmReportDBContext _dbContext;
+        private PharmReportProfile _profile;
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -43,8 +47,10 @@ namespace PharmReport
         /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
-            _window = new MainWindow();
-            _window.Activate();
+            _dbContext = new PharmReportDBContext("PharmReportDB.db");
+            _profile = new PharmReportProfile("PharmReportDB");
+            _frmWindow = new FrmMainWindow(new MainWindow(),_dbContext, _profile);
+            _frmWindow.Show();
         }
     }
 }

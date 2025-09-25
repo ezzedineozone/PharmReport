@@ -6,5 +6,9 @@
   "credentials": {
     "username": "PharmReportWinUI",
     "apiKey": "privateKey"
+  },
+  "blazor": {
+    "publishPath": "BlazorApp/wwwroot",
+    "type": "wasm"
   }
 }

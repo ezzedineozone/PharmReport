@@ -14,27 +14,33 @@
         <MicaBackdrop />
     </Window.SystemBackdrop>
 
-    <Grid>
+    <Grid Name="MainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="0"/>
             <RowDefinition Height="46"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="60"/>
+            <ColumnDefinition Width="80"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid Grid.Row="2" Grid.Column="1">
             
         </Grid>
-        <StackPanel Grid.Row="0" Grid.RowSpan="3" Grid.Column="0"
+        <StackPanel Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" 
                     Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}"
-                    Orientation="Vertical">
-            <muxc:Button Height="60" Width="60">
-                <muxc:SymbolIcon Symbol="Add"/>
+                    Orientation="Vertical" Name="SidePanel">
+            <muxc:Button Height="60" HorizontalAlignment="Stretch" PointerEntered="OnSidePanelButtonEntered" PointerExited="OnSidePanelButtonExited" Name="AddReceiptButton">
+                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+                    <muxc:SymbolIcon Symbol="Add" Width="60" />
+                    <TextBlock Tag="SidePanelButtonDescription" Visibility="Collapsed" Margin="0,2,0,0" TextAlignment="Center" HorizontalTextAlignment="Center" Text="Create Receipt" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Stretch" FontWeight="Bold" />
+                </StackPanel>
             </muxc:Button>
-            <muxc:Button Height="60" Width="60">
-                <muxc:SymbolIcon Symbol="Preview"/>
+            <muxc:Button Height="60" HorizontalAlignment="Stretch" PointerEntered="OnSidePanelButtonEntered" PointerExited="OnSidePanelButtonExited" Name="ViewReceiptsButton">
+                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal" >
+                    <muxc:SymbolIcon Symbol="List" Width="60" />
+                    <TextBlock Tag="SidePanelButtonDescription" Visibility="Collapsed" Margin="0,2,0,0" TextAlignment="Center" HorizontalTextAlignment="Center" Text="View Receipts" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Stretch" FontWeight="Bold"/>
+                </StackPanel>
             </muxc:Button>
         </StackPanel>
     </Grid>
