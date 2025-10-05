@@ -15,6 +15,8 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using PharmReport.Models;
+using PharmReport.Others.Converters;
+using Microsoft.EntityFrameworkCore;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -22,13 +24,37 @@ using PharmReport.Models;
 namespace PharmReport
 {
 
-    public sealed partial class MainWindow : Window
+    public sealed partial class MainWindow : Window, System.ComponentModel.INotifyPropertyChanged
     {
-        
-        public MainWindow()
+        private bool _showArabicFields = false;
+
+        public PharmReportProfile Profile { get; set; } = new PharmReportProfile();
+
+        public bool ShowArabicFields
+        {
+            get => _showArabicFields;
+            set
+            {
+                if (_showArabicFields == value) return;
+                _showArabicFields = value;
+                OnPropertyChanged(nameof(ShowArabicFields));
+            }
+        }
+
+        public MainWindow(PharmReportProfile profile)
         {
             InitializeComponent();
+            if (this.Content is FrameworkElement root)
+            {
+                root.DataContext = this;
+            }
+            this.Profile = profile ?? throw new ArgumentNullException(nameof(profile));
         }
+
+        public event System.ComponentModel.PropertyChangedEventHandler? PropertyChanged;
+        private void OnPropertyChanged(string propertyName)
+            => PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+
 
 
         private void OnSidePanelButtonExited(object sender, PointerRoutedEventArgs e)
@@ -92,30 +118,64 @@ namespace PharmReport
             }
             CompositionTarget.Rendering += OnRendering;
         }
+
     }
+
 
     public class FrmMainWindow : Window
     {
-        private Window _window;
+        private MainWindow _window;
         private PharmReportDBContext _dbContext;
         private PharmReportProfile _profile;
 
-
-        public FrmMainWindow(Window window, PharmReportDBContext dbContext, PharmReportProfile profile)
+        public FrmMainWindow(MainWindow window, PharmReportDBContext dbContext)
         {
             // check if any are null and throw an exception
-            if(window == null || dbContext == null || profile == null)
+            if (window == null || dbContext == null)
             {
                 throw new ArgumentNullException(nameof(window));
             }
             this._window = window;
             this._dbContext = dbContext;
-            this._profile = profile;
+            this._profile = window.Profile ?? new PharmReportProfile() { lastLogin = DateTime.Now };
+            SetUpEventHandlers();
         }
-
         public void Show()
         {
             _window?.Activate();
+        }
+
+
+
+        private void SetUpEventHandlers()
+        {
+            if (_window is null)
+            {
+                throw new InvalidOperationException("Window is not initialized.");
+            }
+            _window.SavePharmacyButton.Click += SavePharmacyButton_Click;
+        }
+
+        private void SavePharmacyButton_Click(object sender, RoutedEventArgs e)
+        {
+            Upsert(_window.Profile.Pharmacy, _dbContext.Pharmacies);
+            Upsert(_window.Profile.Pharmacist, _dbContext.Pharmacists);
+            Upsert(_window.Profile, _dbContext.PharmReportProfiles);
+
+            _dbContext.SaveChanges();
+        }
+        private void Upsert<TEntity>(TEntity entity, DbSet<TEntity> dbSet) where TEntity : class
+        {
+            var entry = _dbContext.Entry(entity);
+
+            if (entry.IsKeySet)
+            {
+                dbSet.Update(entity);
+            }
+            else
+            {
+                dbSet.Add(entity);
+            }
         }
     }
 }

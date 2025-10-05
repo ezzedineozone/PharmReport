@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using PharmReport.Models;
+using System.IO;
 namespace PharmReport.EF
 {
     public class PharmReportDBContext : DbContext
@@ -18,7 +19,9 @@ namespace PharmReport.EF
 
         public PharmReportDBContext(string databaseName = "PharmReport")
         {
-            this.dbName = databaseName + ".db";
+            var baseDir = AppContext.BaseDirectory ?? Directory.GetCurrentDirectory();
+            Directory.CreateDirectory(baseDir);
+            this.dbName = Path.Combine(baseDir, databaseName + ".db");
             this.Database.EnsureCreated();
         }
 

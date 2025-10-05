@@ -14,6 +14,12 @@ namespace PharmReport.Models
         public string? PhoneNumber { get; set; }
         public string? PhoneNumber_AR { get; set; }
 
+        public Pharmacist()
+        {
+            OrderRegistrationNumber = string.Empty;
+            Name = string.Empty;
+        }
+
         public Pharmacist(string Name, string OrderRegistrationNumber)
         {
             this.Name = Name ?? throw new ArgumentNullException(nameof(Name));

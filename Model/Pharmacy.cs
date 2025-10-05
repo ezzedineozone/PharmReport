@@ -16,14 +16,20 @@ namespace PharmReport.Models
         public Pharmacist HeadPharmacist { get; set; }
         public Pharmacist? HeadPharmacist_AR { get; set; }
         public List<Pharmacist> Pharmacists { get; set; }
-        public List<Pharmacist> Pharmacists_AR { get; set; }
-
         public string? CNSSNumber { get; set; }
         public string? CNSSNumber_AR { get; set; }
         public string? Address { get; set; }
         public string? Address_AR { get; set; }
         public string? Telephone { get; set; }
         public string? Telephone_AR { get; set; }
+
+        public Pharmacy()
+        {
+            Name = string.Empty;
+            LicenseNumber = string.Empty;
+            HeadPharmacist = new Pharmacist();
+            Pharmacists = new List<Pharmacist>();
+        }
 
         public Pharmacy(string Name, string LicenseNumber, Pharmacist headPharmacist)
             : this(Name, LicenseNumber, headPharmacist, null, null, null)
@@ -45,7 +51,6 @@ namespace PharmReport.Models
             this.HeadPharmacist = HeadPharmacist ?? throw new ArgumentNullException(nameof(HeadPharmacist));
             this.HeadPharmacist_AR = null;
             Pharmacists = new List<Pharmacist>();
-            Pharmacists_AR = new List<Pharmacist>();
             populateArabicFields();
         }
 

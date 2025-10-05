@@ -1,45 +1,178 @@
-<?xml version="1.0" encoding="utf-8"?>
 <Window
     x:Class="PharmReport.MainWindow"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:PharmReport"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="using:PharmReport"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
-    Title="PharmReport">
-
+    Title="PharmReport"
+	xmlns:converters="using:PharmReport.Others.Converters">
     <Window.SystemBackdrop>
         <MicaBackdrop />
     </Window.SystemBackdrop>
-
     <Grid Name="MainGrid">
+        <Grid.Resources>
+            <converters:ZeroToVisibilityConverter x:Key="ZeroToVisibilityConverter"/>
+            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="0"/>
-            <RowDefinition Height="46"/>
+            <RowDefinition Height="0"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="80"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Grid Grid.Row="2" Grid.Column="1">
-            
+      <Grid Grid.Row="2" Grid.Column="1"
+          Visibility="{Binding Profile.Pharmacy.Id, Converter={StaticResource ZeroToVisibilityConverter}}">
+            <Grid Padding="20"
+                  Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                  CornerRadius="12"
+                  RowSpacing="12"
+                  ColumnSpacing="12" ScrollViewer.VerticalScrollMode="Enabled">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Row="0" Grid.ColumnSpan="2"
+                           Text="Create New Pharmacy"
+                           FontSize="20"
+                           FontWeight="Bold"
+                           Margin="0,0,0,10"/>
+                <TextBox Grid.Row="2" Grid.ColumnSpan="1" Grid.Column="0"
+                         Header="Pharmacy Name"
+                         Text="{Binding Profile.Pharmacy.Name, Mode=TwoWay}"/>
+                <TextBox Grid.Row="2" Grid.Column="1"
+                         Header="License Number"
+                         Text="{Binding Profile.Pharmacy.LicenseNumber, Mode=TwoWay}"/>
+                <TextBox Grid.Row="2" Grid.Column="2"
+                         Header="CNSS Number"
+                         Text="{Binding Profile.Pharmacy.CNSSNumber, Mode=TwoWay}"/>
+                <TextBox Grid.Row="3" Grid.ColumnSpan="2"
+                         Header="Address"
+                         Text="{Binding Profile.Pharmacy.Address, Mode=TwoWay}"/>
+                <TextBox Grid.Row="3" Grid.Column="2" 
+                         Header="Telephone"
+                         Text="{Binding Profile.Pharmacy.Telephone, Mode=TwoWay}"/>
+                <TextBox Grid.Row="5" Grid.Column="0"
+                         Header="Head Pharmacist Name"
+                         Text="{Binding Profile.Pharmacy.HeadPharmacist.Name, Mode=TwoWay}"/>
+                <TextBox Grid.Row="5" Grid.Column="1"
+                         Header="Head Pharmacist Surname"
+                         Text="{Binding Profile.Pharmacy.HeadPharmacist.Surname, Mode=TwoWay}"/>
+                <TextBox Grid.Row="5" Grid.Column="2"
+                         Header="Head Pharmacist Phone"
+                         Text="{Binding Profile.Pharmacy.HeadPharmacist.PhoneNumber, Mode=TwoWay}"/>
+                <CheckBox Grid.Row="7" Grid.ColumnSpan="2"
+                          Content="Enable Arabic Fields"
+                          IsChecked="{Binding ShowArabicFields, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <Grid Grid.Row="8" Grid.ColumnSpan="3"
+                    Visibility="{Binding ShowArabicFields, Converter={StaticResource BoolToVisibilityConverter}}"
+                    RowSpacing="12"
+                    ColumnSpacing="12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.ColumnSpan="3"
+               Text="Create New Pharmacy (Arabic)"
+               FontSize="20"
+               FontWeight="Bold"
+               Margin="0,0,0,10"/>
+              <TextBox Grid.Row="1" Grid.Column="0"
+          Header="Pharmacy Name (AR)"
+          Text="{Binding Profile.Pharmacy.Name_AR, Mode=TwoWay}"/>
+              <TextBox Grid.Row="1" Grid.Column="1"
+          Header="License Number (AR)"
+          Text="{Binding Profile.Pharmacy.LicenseNumber_AR, Mode=TwoWay}"/>
+              <TextBox Grid.Row="1" Grid.Column="2"
+          Header="CNSS Number (AR)"
+          Text="{Binding Profile.Pharmacy.CNSSNumber_AR, Mode=TwoWay}"/>
+              <TextBox Grid.Row="2" Grid.ColumnSpan="2"
+          Header="Address (AR)"
+          Text="{Binding Profile.Pharmacy.Address_AR, Mode=TwoWay}"/>
+              <TextBox Grid.Row="2" Grid.Column="2"
+          Header="Telephone (AR)"
+          Text="{Binding Profile.Pharmacy.Telephone_AR, Mode=TwoWay}"/>
+              <TextBox Grid.Row="3" Grid.Column="0"
+          Header="Head Pharmacist Name (AR)"
+          Text="{Binding Profile.Pharmacy.HeadPharmacist.Name_AR, Mode=TwoWay}"/>
+              <TextBox Grid.Row="3" Grid.Column="1"
+          Header="Head Pharmacist Surname (AR)"
+          Text="{Binding Profile.Pharmacy.HeadPharmacist.Surname_AR, Mode=TwoWay}"/>
+              <TextBox Grid.Row="3" Grid.Column="2"
+          Header="Head Pharmacist Phone (AR)"
+          Text="{Binding Profile.Pharmacy.HeadPharmacist.PhoneNumber_AR, Mode=TwoWay}"/>
+                </Grid>
+                <Button Grid.Row="9" Grid.ColumnSpan="2"
+                        Content="Save Pharmacy"
+                        Name="SavePharmacyButton"
+                        HorizontalAlignment="Right"
+                        x:FieldModifier="public"/>
+            </Grid>
         </Grid>
         <StackPanel Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" 
                     Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}"
                     Orientation="Vertical" Name="SidePanel">
-            <muxc:Button Height="60" HorizontalAlignment="Stretch" PointerEntered="OnSidePanelButtonEntered" PointerExited="OnSidePanelButtonExited" Name="AddReceiptButton">
+            <muxc:Button Height="60" HorizontalAlignment="Stretch"
+                         PointerEntered="OnSidePanelButtonEntered"
+                         PointerExited="OnSidePanelButtonExited"
+                         Name="AddReceiptButton">
                 <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
                     <muxc:SymbolIcon Symbol="Add" Width="60" />
-                    <TextBlock Tag="SidePanelButtonDescription" Visibility="Collapsed" Margin="0,2,0,0" TextAlignment="Center" HorizontalTextAlignment="Center" Text="Create Receipt" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Stretch" FontWeight="Bold" />
+                    <TextBlock Tag="SidePanelButtonDescription"
+                               Visibility="Collapsed"
+                               Margin="0,2,0,0"
+                               TextAlignment="Center"
+                               HorizontalTextAlignment="Center"
+                               Text="Create Receipt"
+                               FontSize="14"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Stretch"
+                               FontWeight="Bold"/>
                 </StackPanel>
             </muxc:Button>
-            <muxc:Button Height="60" HorizontalAlignment="Stretch" PointerEntered="OnSidePanelButtonEntered" PointerExited="OnSidePanelButtonExited" Name="ViewReceiptsButton">
-                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal" >
+            <muxc:Button Height="60" HorizontalAlignment="Stretch"
+                         PointerEntered="OnSidePanelButtonEntered"
+                         PointerExited="OnSidePanelButtonExited"
+                         Name="ViewReceiptsButton">
+                <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
                     <muxc:SymbolIcon Symbol="List" Width="60" />
-                    <TextBlock Tag="SidePanelButtonDescription" Visibility="Collapsed" Margin="0,2,0,0" TextAlignment="Center" HorizontalTextAlignment="Center" Text="View Receipts" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Stretch" FontWeight="Bold"/>
+                    <TextBlock Tag="SidePanelButtonDescription"
+                               Visibility="Collapsed"
+                               Margin="0,2,0,0"
+                               TextAlignment="Center"
+                               HorizontalTextAlignment="Center"
+                               Text="View Receipts"
+                               FontSize="14"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Stretch"
+                               FontWeight="Bold"/>
                 </StackPanel>
             </muxc:Button>
         </StackPanel>

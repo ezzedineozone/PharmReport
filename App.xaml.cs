@@ -47,9 +47,11 @@ namespace PharmReport
         /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
-            _dbContext = new PharmReportDBContext("PharmReportDB.db");
-            _profile = new PharmReportProfile("PharmReportDB");
-            _frmWindow = new FrmMainWindow(new MainWindow(),_dbContext, _profile);
+            _dbContext = new PharmReportDBContext("PharmReportDB");
+            _profile = _dbContext.PharmReportProfiles
+                .OrderByDescending(p => p.lastLogin)
+                .FirstOrDefault() ?? new PharmReportProfile() { lastLogin = DateTime.Now };
+            _frmWindow = new FrmMainWindow(new MainWindow(_profile),_dbContext);
             _frmWindow.Show();
         }
     }
